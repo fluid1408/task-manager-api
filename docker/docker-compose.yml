@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: task_manager_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../tasks.db:/app/tasks.db
+      - ../logs:/app/logs
+      - ../static:/app/static
+    environment:
+      - DATABASE_URL=sqlite:///./tasks.db
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
