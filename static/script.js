@@ -1,6 +1,5 @@
 const API_URL = window.location.origin + '/api/v1/tasks';
 
-// Элементы DOM
 const taskForm = document.getElementById('taskForm');
 const tasksContainer = document.getElementById('tasksContainer');
 const errorDiv = document.getElementById('error');
@@ -8,7 +7,6 @@ const successDiv = document.getElementById('success');
 const apiUrlSpan = document.getElementById('apiUrl');
 const taskCountSpan = document.getElementById('taskCount');
 
-// Показать сообщение об ошибке
 function showError(message) {
     errorDiv.textContent = message;
     errorDiv.style.display = 'block';
@@ -19,7 +17,6 @@ function showError(message) {
     }, 5000);
 }
 
-// Показать сообщение об успехе
 function showSuccess(message) {
     successDiv.textContent = message;
     successDiv.style.display = 'block';
@@ -30,7 +27,6 @@ function showSuccess(message) {
     }, 3000);
 }
 
-// Получить CSS класс для статуса
 function getStatusClass(status) {
     switch(status) {
         case 'active': return 'status status-active';
@@ -40,7 +36,6 @@ function getStatusClass(status) {
     }
 }
 
-// Получить русское название статуса
 function getStatusText(status) {
     const statusMap = {
         'active': 'Активная',
@@ -50,13 +45,11 @@ function getStatusText(status) {
     return statusMap[status] || status;
 }
 
-// Форматирование даты
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleString('ru-RU');
 }
 
-// Создать карточку задачи
 function createTaskCard(task) {
     return `
         <div class="task-card" data-id="${task.id}">
@@ -83,12 +76,10 @@ function createTaskCard(task) {
     `;
 }
 
-// Загрузить все задачи
 async function loadTasks() {
     try {
         tasksContainer.innerHTML = '<div class="loading">Загрузка задач...</div>';
         
-        // ИСПРАВЛЕНО: правильный путь
         const response = await fetch(`${API_URL}/tasks/`);
         
         if (!response.ok) {
@@ -107,7 +98,7 @@ async function loadTasks() {
         tasksContainer.innerHTML = '<div class="tasks-grid"></div>';
         const grid = tasksContainer.querySelector('.tasks-grid');
         
-        // Сортируем по дате создания (новые первыми)
+        
         tasks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         
         tasks.forEach(task => {
@@ -122,10 +113,9 @@ async function loadTasks() {
     }
 }
 
-// Создать новую задачу
 async function createTask(taskData) {
     try {
-        // ИСПРАВЛЕНО: правильный путь
+        
         const response = await fetch(`${API_URL}/tasks/`, {
             method: 'POST',
             headers: {
@@ -150,10 +140,9 @@ async function createTask(taskData) {
     }
 }
 
-// Обновить статус задачи
 async function updateTaskStatus(taskId, status) {
     try {
-        // ИСПРАВЛЕНО: правильный путь
+    
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
@@ -175,14 +164,13 @@ async function updateTaskStatus(taskId, status) {
     }
 }
 
-// Удалить задачу
 async function deleteTask(taskId) {
     if (!confirm('Вы уверены, что хотите удалить эту задачу?')) {
         return;
     }
     
     try {
-        // ИСПРАВЛЕНО: правильный путь
+    
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             method: 'DELETE'
         });
@@ -200,15 +188,13 @@ async function deleteTask(taskId) {
     }
 }
 
-// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    // Показать URL API
     apiUrlSpan.textContent = API_URL;
     
-    // Загрузить задачи при загрузке страницы
+    
     loadTasks();
     
-    // Обработка формы
+  
     taskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -228,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Экспорт функций для использования в HTML
 window.loadTasks = loadTasks;
 window.updateTaskStatus = updateTaskStatus;
 window.deleteTask = deleteTask;

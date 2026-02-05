@@ -3,7 +3,6 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator
 from enum import Enum
 
-# Enums
 class TaskStatus(str, Enum):
     ACTIVE = "active"
     COMPLETED = "completed"
@@ -14,7 +13,6 @@ class TaskPriority(str, Enum):
     MEDIUM = "medium"
     HIGH = "high"
 
-# Базовые схемы
 class TaskBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=200, example="Купить продукты")
     description: Optional[str] = Field(None, max_length=1000, example="Молоко, хлеб, яйца")
@@ -45,7 +43,7 @@ class TaskResponse(TaskBase):
     updated_at: Optional[datetime]
     
     class Config:
-        from_attributes = True  # Заменяет orm_mode в Pydantic v2
+        from_attributes = True 
 
 # Для списка с пагинацией
 class PaginatedResponse(BaseModel):

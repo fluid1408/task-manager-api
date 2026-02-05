@@ -1,12 +1,10 @@
-# В app/main.py
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 
 from app.database import engine, Base
-from app.api.tasks import router as tasks_router  # Импортируем напрямую
+from app.api.tasks import router as tasks_router
 
-# Создаем таблицы
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -15,10 +13,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Подключаем tasks роутер напрямую с префиксом
 app.include_router(tasks_router, prefix="/api/v1/tasks", tags=["tasks"])
 
-# Подключаем статические файлы
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")

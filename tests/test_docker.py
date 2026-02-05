@@ -1,4 +1,3 @@
-# tests/test_docker.py
 import requests
 
 def test_docker_health():
